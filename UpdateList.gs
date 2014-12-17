@@ -3,7 +3,6 @@ function updateForm() {
  
   //defult values 
   var frmItemDesc = 'Merit Badge Selection';
-  var sName = 'MB Counselors';
   var frmItemId=0;
   var mbList = [];
   var mbChoices = [];
@@ -41,7 +40,7 @@ function updateForm() {
   Logger.log('Spreadsheet ' + ss.getName());
   
   //establish range from spreadsheet
-  var mbRange = ss.getSheetByName(sName).getDataRange();
+  var mbRange = ss.getSheetByName('MB Counselors').getDataRange();
   
   //extract each merit badge from range
   var mbValues = mbRange.getValues();
