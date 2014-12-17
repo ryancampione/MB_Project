@@ -1,8 +1,7 @@
-//send email notification to last response
-function emailCouncilors() {
+//email counselor about form request
+function emailCounselors() {
   
   //defult values 
-  var sName = 'MB Counselors';
   var subject = 'Merit Badge Councilor Requested';
   var aEmails = [];
   
@@ -21,7 +20,7 @@ function emailCouncilors() {
   var ss = SpreadsheetApp.openById('1G-97WcZdqg9zrEaBHBRrSpOAcllNCnd1YlbcpU4HCR0');
   
   //establish range from spreadsheet
-  var mbRange = ss.getSheetByName(sName).getDataRange();
+  var mbRange = ss.getSheetByName('MB Counselors').getDataRange();
   
   //extract each merit badge from range
   var mbValues = mbRange.getValues();
@@ -58,5 +57,39 @@ function emailCouncilors() {
   body = body + 'Additional comments: ' + comments;
   
   //send email notification to counselor
+   MailApp.sendEmail(email,replyto,subject,body);
+}
+
+//email form user after completion
+function emailUser() {
+  
+  //establish form by id
+  var form = FormApp.openById('1V5dSAVYC77KXvxK7P4N7U0_HTZ9OU7YIQmnl-BkEbgg');
+  
+  //establish last response
+  var allResponses = form.getResponses();
+  var last = allResponses.length - 1;
+  var itemResponses = allResponses[last].getItemResponses();
+  
+  //record users email address
+  var email = itemResponses[1].getResponse();
+  
+  //record desired merit badge from last response
+  var badge = itemResponses[2].getResponse();
+
+  //designate email subject 
+  var subject = 'Confirmation: Merit Badge Councilor Request';
+  
+  //designate replyto email address
+  var replyto = 'info@macbsa.org';
+  
+  //build body of email
+  var cName = itemResponses[0].getResponse();
+  var comments = itemResponses[3].getResponse(); 
+  var body = 'Hello ' + cName + ', Your request for a ' + badge + ' merit badge counselor has been recieved and the counselor(s) have been notified. ';
+  body = body + 'A counselor will contact you to make arrangements for the badge. If you do not hear from a merit badge counselor within a week, please ';
+  body = body + 'reply to this email and let us know.';
+  
+  //send email notification to user
    MailApp.sendEmail(email,replyto,subject,body);
 }
