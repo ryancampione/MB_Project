@@ -12,7 +12,14 @@ ScriptApp.newTrigger('updateForm')
   .create();
 
 //trigger on every submission
-ScriptApp.newTrigger('emailCouncilors')
+ScriptApp.newTrigger('emailCounselors')
    .forForm('1V5dSAVYC77KXvxK7P4N7U0_HTZ9OU7YIQmnl-BkEbgg')
    .onFormSubmit()
    .create();
+
+//trigger on every submission
+ScriptApp.newTrigger('emailUser')
+  .forForm('1V5dSAVYC77KXvxK7P4N7U0_HTZ9OU7YIQmnl-BkEbgg')
+  .onFormSubmit()
+  .create();
+  
