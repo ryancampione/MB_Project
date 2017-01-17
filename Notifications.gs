@@ -23,51 +23,80 @@ function sendNewlyApprovedEmails() {
       if (counselor.mbs[j].approved > benchmark) {
         recentlyApproved = true;
         break;
-      }
-    }
-    if (recentlyApproved) {
+/**
+ * Notify counselors that have been recently approved to teach a merit badge
+ *
+ */
+function sendNewlyApprovedEmails() {
+  //get counselors information from spreadsheet
+  var counselors = getCounselors();
+  
+  //establish user interface for spreadsheet
+  var ui = SpreadsheetApp.getUi();
+  
+  //get benchmark date to determine if a counselor was 'recently approved'
+  var benchmark = getBenchmarkDate();
+  
+  //iterate through each counselor
+  for (i = 0; i < counselors.length; i++) {
+    var counselor = counselors[i];
+    
+    //skip retired counselors
+    if (counselor.status != 'Retired') {
       
-      //only email counselors that have an email address
-      if (counselor.email != '') {
-        
-        //confirm with the user before emailing a counselor
-        var response = ui.alert(
-          'Notify Newly Approved Counselor', 
-          'Are you sure you want to email ' + counselor.name + '?', 
-          ui.ButtonSet.YES_NO
-        );
-        
-        //user clicks YES button
-        if (response == ui.Button.YES) {
-        
-          //get templated html file with counselor informtion
-          var htmlMsg = getHTMLTemplate(counselor, 'TemplateNewlyApproved').getContent();
-          
-          //send email through gmail
-          GmailApp.sendEmail(
-            counselor.email, //counselor.email,
-            'Approved Merit Badge Counselor', //email subject
-            'Congratualtions, you have been approved to be a merit badge counselor.', //plain text
-            {
-              htmlBody: htmlMsg, //html message
-              name: 'Mountaineer Area Council Advancement' //senders name
-            }
-          );
-          ui.alert('Email successfully sent to ' + counselor.name);
-          
-        //user clicks NO button
-        } else if (response == ui.Button.NO) {
-          ui.alert('Alright, ' + counselor.name + ' was not emailed.');
-        
-        //user closes the prompt window without responding
-        } else {
-          ui.alert('Notifications canceled.');
-          return;
+      //determine if a conselor was recently approved
+      var recentlyApproved = false;
+      for (j = 0; j < counselor.mbs.length; j++) {
+        //approval date is more recent then benchmark date
+        if (counselor.mbs[j].status == 'Active' && counselor.mbs[j].approved > benchmark) {
+          recentlyApproved = true;
+          break;
         }
-      
-      //notify user that the counselor is missing an email address
-      } else {
+      }
+      if (recentlyApproved) {
+        
+        //only email counselors that have an email address
+        if (counselor.email != '') {
+          
+          //confirm with the user before emailing a counselor
+          var response = ui.alert(
+            'Notify Newly Approved Counselor', 
+            'Are you sure you want to email ' + counselor.name + '?', 
+            ui.ButtonSet.YES_NO
+          );
+          
+          //user clicks YES button
+          if (response == ui.Button.YES) {
+            
+            //get templated html file with counselor informtion
+            var htmlMsg = getHTMLTemplate(counselor, 'TemplateNewlyApproved').getContent();
+            
+            //send email through gmail
+            GmailApp.sendEmail(
+              counselor.email, //counselor.email,
+              'Approved Merit Badge Counselor', //email subject
+              'Congratualtions, you have been approved to be a merit badge counselor.', //plain text
+              {
+                htmlBody: htmlMsg, //html message
+                name: 'Mountaineer Area Council Advancement' //senders name
+              }
+            );
+            ui.alert('Email successfully sent to ' + counselor.name);
+            
+            //user clicks NO button
+          } else if (response == ui.Button.NO) {
+            ui.alert('Alright, ' + counselor.name + ' was not emailed.');
+            
+            //user closes the prompt window without responding
+          } else {
+            ui.alert('Notifications canceled.');
+            return;
+          }
+          
+          //notify user that the counselor is missing an email address
+        } else {
           ui.alert('Error: Cannot email ' + counselor.name + '.\nNo email address found.');
+        }
       }
     }
   }
