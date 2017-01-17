@@ -1,0 +1,37 @@
+<style>
+
+body { 
+	-webkit-text-size-adjust: none; 
+}
+
+/* containers */
+.container-btn {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 10%;
+}
+
+
+/* button */
+a.btn {
+	border: 1px;
+	border-radius: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	/*font-weight: bold;*/
+	text-decoration: none;
+}
+
+#yes {
+  	background-color: #32720c;
+	color: #ffffff;
+}
+
+#no {
+  	background-color: #bc341c;
+	color: #ffffff;
+}
+
+</style>
