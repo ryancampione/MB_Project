@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body>
+      <div>
+        Hello <?= counselor.name.split(' ')[0] ?>,
+      </div>
+      <br>
+      <div>
+        Mountaineer Area Council is working to update our Merit Badge Counselor records. You are currently registered as a counselor for the following merit badges:
+        <ul>
+          <? for (var i = 0; i < counselor.mbs.length; i++) { ?>
+            <? if ( counselor.mbs[i].status == 'Active' || counselor.mbs[i].status == '') { ?>
+              <li><?= counselor.mbs[i].badge ?></li>
+            <? } ?>
+          <? } ?>
+        </ul>
+        Would you like to continue serving as a Counselor in 2017?
+      </div>
+      <div class="container-btn">
+        <? var linkYes = getReconfirmFormLink(counselor,'Yes') ?>
+        <? var linkNo = getReconfirmFormLink(counselor, 'No') ?>
+        &emsp;<a class="btn" id="yes" href="<?= linkYes ?>">Yes</a>&emsp;&emsp;<a class="btn" id="no" href="<?= linkNo ?>">No</a>
+      </div>
+      <br>
+      <div>
+        Thank you,<br>
+        Ryan Campione<br>
+        <br>
+        Mountaineer Area Council<br>
+        Advancement Committee Member<br>
+      </div>
+  </body>
+</html>
