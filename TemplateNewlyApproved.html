@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body>
+      <div>
+        Hello <?= counselor.name.split(' ')[0] ?>,
+      </div>
+      <br>
+      <div>
+        Thank you for registering to be a Merit Badge Counselor! <br> <br>
+        You have been officially approved to be a counselor for the following merit badges:
+        <ul>
+          <? for (var i = 0; i < counselor.mbs.length; i++) { ?>
+            <? var benchmark = getBenchmarkDate(); ?>
+            <? if ( counselor.mbs[i].approved >= benchmark) { ?>
+              <li><?= counselor.mbs[i].badge ?></li>
+            <? } ?>
+          <? } ?>
+        </ul>
+      </div>
+      <br>
+      <div>
+        Thank you,<br>
+        Ryan Campione<br>
+        <br>
+        Mountaineer Area Council<br>
+        Advancement Committee Member<br>
+      </div>
+  </body>
+</html>
